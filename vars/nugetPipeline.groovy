@@ -22,7 +22,7 @@ def call(body) {
                     dotnet.shell "mkdir Artifacts"
                 }
 
-                dotnet.restore()
+                dotnet.restore project:"", opts: "-c ${config.nugetConfig}"
                 dotnet.build()
             }
 
