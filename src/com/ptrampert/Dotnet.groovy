@@ -1,6 +1,6 @@
 package com.ptrampert
 
-def shell(GString command) {
+def shell(command) {
     if (isUnix()) {
         sh command
     }
@@ -17,8 +17,8 @@ def build(project, opts) {
     shell "dotnet build ${project} ${opts}"
 }
 
-def restore(project, opts) {
-    shell "dotnet restore ${project} ${opts}"
+def restore() {
+    shell "dotnet restore"
 }
 
 def pack(project, opts) {
