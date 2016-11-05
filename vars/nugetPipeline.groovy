@@ -20,7 +20,7 @@ def call(body) {
                     shell "mkdir Artifacts"
                 }
                 if (env.NugetConfig) {
-                    shell "dotnet restore -c ${env.NugetConfig}"
+                    shell "dotnet restore --configfile ${env.NugetConfig}"
                 }
                 else {
                     shell "dotnet restore"
