@@ -4,7 +4,6 @@ def call(body) {
     body.delegate = config
     body()
 
-    def dotnet = new Dotnet()
     node {
         try {
             stage("Update Sources") {
