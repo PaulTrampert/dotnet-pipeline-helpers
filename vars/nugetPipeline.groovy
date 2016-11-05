@@ -1,5 +1,3 @@
-import com.ptrampert.Dotnet
-
 def call(body) {
     def config = [:]
     body.resolveStrategy = Closure.DELEGATE_FIRST
@@ -15,30 +13,31 @@ def call(body) {
                 } else {
                     git url: config.repoUrl
                 }
+                shell "git clean -xdf"
             }
 
             stage("Build") {
                 if (!fileExists('Artifacts')) {
-                    dotnet.shell "mkdir Artifacts"
+                    shell "mkdir Artifacts"
                 }
                 if (env.NugetConfig) {
-                    dotnet.restore opts: "-c '${env.NugetConfig}'"
+                    shell "dotnet restore -c ${env.NugetConfig}"
                 }
                 else {
-                    dotnet.restore()
+                    shell "dotnet restore"
                 }
-                dotnet.build()
+                shell "dotnet build **/project.json"
             }
 
             stage("Test") {
                 catchError {
-                    dotnet.test project: "${config.project}.Test", opts: "--result Artifacts/TestResults.xml"
+                    shell "dotnet test ${config.project}.Test --result Artifacts/TestResults.xml"
                 }
             }
 
             stage("Package") {
                 def shortBranch = env.BRANCH_NAME.take(10)
-                dotnet.pack project: "${config.project}", opts: "--output Artifacts --version-suffix ${shortBranch}.${env.BUILD_NUMBER}"
+                shell "dotnet pack ${config.project} --output Artifacts --version-suffix ${shortBranch}.${env.BUILD_NUMBER}"
             }
 
             stage("Reporting") {
