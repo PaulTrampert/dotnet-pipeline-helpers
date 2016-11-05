@@ -1,6 +1,6 @@
 package com.ptrampert
 
-def shell(command) {
+def shell(GString command) {
     if (isUnix()) {
         sh command
     }
