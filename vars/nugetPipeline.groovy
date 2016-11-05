@@ -21,8 +21,12 @@ def call(body) {
                 if (!fileExists('Artifacts')) {
                     dotnet.shell "mkdir Artifacts"
                 }
-
-                dotnet.restore project:"", opts: "-c ${config.nugetConfig}"
+                if (config.nugetConfig) {
+                    dotnet.restore project: "", opts: "-c ${config.nugetConfig}"
+                }
+                else {
+                    dotnet.restore()
+                }
                 dotnet.build()
             }
 
