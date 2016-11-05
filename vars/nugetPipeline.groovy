@@ -15,12 +15,12 @@ def call(body) {
             }
 
             stage("Build") {
-                if (!fileExists("Artifacts")) {
+                if (!fileExists('Artifacts')) {
                     dotnet.shell "mkdir Artifacts"
                 }
 
-                dotnet.restore
-                dotnet.build
+                dotnet.restore()
+                dotnet.build()
             }
 
             stage("Test") {
