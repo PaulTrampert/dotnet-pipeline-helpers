@@ -1,9 +1,12 @@
+import com.ptrampert.Dotnet
+
 def call(body) {
     def config = [:]
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
     body()
 
+    def dotnet = new Dotnet()
     node {
         try {
             stage("Update Sources") {
