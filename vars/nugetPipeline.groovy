@@ -56,6 +56,7 @@ def call(body) {
             currentBuild.result = "FAILURE"
             throw any
         } finally {
+            deleteDir()
             step([$class: 'Mailer', notifyEveryUnstableBuild: true, sendToIndividuals: true, recipients: config.notificationRecipients])
         }
     }
