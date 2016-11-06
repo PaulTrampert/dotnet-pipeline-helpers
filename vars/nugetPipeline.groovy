@@ -41,7 +41,7 @@ def call(body) {
 
             stage("Reporting") {
                 def nunitXslt = libraryResource "com/ptrampert/dotnet/nunit3-xunit.xslt"
-                writeFile "nunit3-xunit.xslt"
+                writeFile file: 'nunit3-xunit.xslt', text: nunitXslt
                 step([
                         $class        : 'XUnitBuilder',
                         testTimeMargin: '3000',
