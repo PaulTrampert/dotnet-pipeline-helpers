@@ -57,10 +57,10 @@ def call(body) {
                                 [$class: 'FailedThreshold', failureNewThreshold: '', failureThreshold: '', unstableNewThreshold: '', unstableThreshold: '0'],
                                 [$class: 'SkippedThreshold', failureNewThreshold: '', failureThreshold: '', unstableNewThreshold: '', unstableThreshold: '']],
                         tools         : [
-                                [$class: 'CustomType', customXSL: 'nunit3-xunit.xslt', deleteOutputFiles: true, failIfNotNew: true, pattern: '${artifactDir}/TestResults.xml', skipNoTestFiles: false, stopProcessingIfError: true]]
+                                [$class: 'CustomType', customXSL: 'nunit3-xunit.xslt', deleteOutputFiles: true, failIfNotNew: true, pattern: "${artifactDir}/TestResults.xml", skipNoTestFiles: false, stopProcessingIfError: true]]
                 ])
-                archiveArtifacts artifacts: '${artifactDir}/*.nupkg', excludes: '${artifactDir}/*.symbols.nupkg'
-                stash excludes: '${artifactDir}/*.symbols.nupkg', includes: '${artifactDir}/*.nupkg', name: 'nupkg'
+                archiveArtifacts artifacts: "${artifactDir}/*.nupkg", excludes: "${artifactDir}/*.symbols.nupkg"
+                stash excludes: "${artifactDir}/*.symbols.nupkg", includes: "${artifactDir}/*.nupkg", name: "nupkg"
             }
         } catch (any) {
             currentBuild.result = "FAILURE"
