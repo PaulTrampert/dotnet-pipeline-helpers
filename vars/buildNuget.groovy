@@ -36,7 +36,7 @@ def call(body) {
 
             stage("Package") {
                 def shortBranch = env.BRANCH_NAME.take(10)
-                shell "dotnet pack ${config.project} --output Artifacts --version-suffix ${shortBranch}.${env.BUILD_NUMBER}"
+                shell "dotnet pack ${config.project} --output Artifacts --version-suffix ${shortBranch}-${env.BUILD_NUMBER}"
             }
 
             stage("Reporting") {
