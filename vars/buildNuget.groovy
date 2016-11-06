@@ -7,12 +7,7 @@ def call(body) {
     node {
         try {
             stage("Update Sources") {
-                if (config.credentialsId) {
-                    git url: config.gitRepoUrl, credentialsId: config.gitCredentialsId
-                } else {
-                    git url: config.gitRepoUrl
-                }
-                shell "git clean -xdf"
+                checkout scm
             }
 
             stage("Build") {
