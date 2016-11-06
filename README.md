@@ -38,3 +38,4 @@ Static list of emails to notify failures to.
 |  +-- project.json
 ```
 * The resulting nupkg will be placed in a directory at the root of the repo called `Artifacts`.
+* Assumes usage of NUnit3 for testing.
