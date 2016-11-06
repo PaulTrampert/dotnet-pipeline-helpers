@@ -53,6 +53,7 @@ def call(body) {
                                 [$class: 'CustomType', customXSL: 'nunit3-xunit.xslt', deleteOutputFiles: true, failIfNotNew: true, pattern: 'Artifacts/TestResults.xml', skipNoTestFiles: false, stopProcessingIfError: true]]
                 ])
                 archiveArtifacts 'Artifacts/*.nupkg'
+                stash includes: 'Artifacts/*.nupkg', name: 'nupkg'
             }
         } catch (any) {
             currentBuild.result = "FAILURE"
