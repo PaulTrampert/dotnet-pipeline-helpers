@@ -26,39 +26,14 @@ def call(body) {
                 }
             }
 
-            stage("Build") {
-                dotnetBuild()
-            }
+            dotnetBuild()
 
-            stage("Test") {
-                catchError {
-                    shell "dotnet test ${testProject} --result ${artifactDir}/TestResults.xml"
-                }
-            }
+            dotnetTest testProject: testProject, resultsFile: "${artifactDir}/TestResults.xml"
 
-            stage("Package") {
-                if (isRelease) {
-                    shell "dotnet pack ${project} --output ${artifactDir}"
-                }
-                else {
-                    def shortBranch = env.BRANCH_NAME.take(10)
-                    shell "dotnet pack ${project} --output ${artifactDir} --version-suffix ${shortBranch}-${env.BUILD_NUMBER}"
-                }
-            }
+            dotnetPack project: project, artifactDir: artifactDir, isRelease: isRelease
 
             stage("Reporting") {
-                def nunitXslt = libraryResource "com/ptrampert/dotnet/nunit3-xunit.xslt"
-                writeFile file: 'nunit3-xunit.xslt', text: nunitXslt
-                step([
-                        $class        : 'XUnitBuilder',
-                        testTimeMargin: '3000',
-                        thresholdMode : 1,
-                        thresholds    : [
-                                [$class: 'FailedThreshold', failureNewThreshold: '', failureThreshold: '', unstableNewThreshold: '', unstableThreshold: '0'],
-                                [$class: 'SkippedThreshold', failureNewThreshold: '', failureThreshold: '', unstableNewThreshold: '', unstableThreshold: '']],
-                        tools         : [
-                                [$class: 'CustomType', customXSL: 'nunit3-xunit.xslt', deleteOutputFiles: true, failIfNotNew: true, pattern: "${artifactDir}/TestResults.xml", skipNoTestFiles: false, stopProcessingIfError: true]]
-                ])
+                reportNunitResults resultsPattern: "${artifactDir}/TestResults.xml"
                 archiveArtifacts artifacts: "${artifactDir}/*.nupkg", excludes: "${artifactDir}/*.symbols.nupkg"
                 stash excludes: "${artifactDir}/*.symbols.nupkg", includes: "${artifactDir}/*.nupkg", name: "nupkg"
             }
