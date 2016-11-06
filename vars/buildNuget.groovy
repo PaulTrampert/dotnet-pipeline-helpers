@@ -28,12 +28,12 @@ def call(body) {
 
             dotnetBuild()
 
-            dotnetTest testProject: testProject, resultsFile: "${artifactDir}/TestResults.xml"
+            dotnetTest(testProject, "${artifactDir}/TestResults.xml")
 
-            dotnetPack project: project, artifactDir: artifactDir, isRelease: isRelease
+            dotnetPack(project, artifactDir, isRelease)
 
             stage("Reporting") {
-                reportNunitResults resultsPattern: "${artifactDir}/TestResults.xml"
+                reportNunitResults("${artifactDir}/TestResults.xml")
                 archiveArtifacts artifacts: "${artifactDir}/*.nupkg", excludes: "${artifactDir}/*.symbols.nupkg"
                 stash excludes: "${artifactDir}/*.symbols.nupkg", includes: "${artifactDir}/*.nupkg", name: "nupkg"
             }
