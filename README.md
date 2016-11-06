@@ -11,6 +11,10 @@ nugetPipeline {
 }
 ```
 
+### Environment Variables
+#### `NugetConfig`
+If set, will use the provided nuget.config file on package restore.
+
 ### Parameters
 #### `gitRepoUrl`
 The url for the git repo. This is the same url you would pass to `git clone`.
