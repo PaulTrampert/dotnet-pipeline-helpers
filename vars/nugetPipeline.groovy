@@ -4,6 +4,8 @@ def call(body) {
     body.delegate = config
     body()
 
+    echo env.BRANCH_NAME
+
     node {
         try {
             stage("Update Sources") {
@@ -62,4 +64,6 @@ def call(body) {
             step([$class: 'Mailer', notifyEveryUnstableBuild: true, sendToIndividuals: true, recipients: config.notificationRecipients])
         }
     }
+
+
 }
