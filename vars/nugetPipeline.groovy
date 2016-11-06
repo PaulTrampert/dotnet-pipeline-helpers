@@ -11,6 +11,8 @@ def call(body) {
         notificationRecipients = config.notificationRecipients
     }
 
+    currentBuild.result = "SUCCESS"
+
     input 'Deploy prerelease package?'
 
     deployNuget {
