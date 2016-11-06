@@ -10,4 +10,11 @@ def call(body) {
         project = config.project
         notificationRecipients = config.notificationRecipients
     }
+
+    input 'Deploy prerelease package?'
+
+    deployNuget {
+        nugetCredentialsId = config.nugetCredentialsId
+        nugetServer = config.nugetServer
+    }
 }
