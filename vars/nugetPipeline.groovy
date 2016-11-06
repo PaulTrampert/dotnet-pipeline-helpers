@@ -40,6 +40,8 @@ def call(body) {
             }
 
             stage("Reporting") {
+                def nunitXslt = libraryResource "com/ptrampert/dotnet/nunit3-xunit.xslt"
+                writeFile "nunit3-xunit.xslt"
                 step([
                         $class        : 'XUnitBuilder',
                         testTimeMargin: '3000',
@@ -48,7 +50,7 @@ def call(body) {
                                 [$class: 'FailedThreshold', failureNewThreshold: '', failureThreshold: '', unstableNewThreshold: '', unstableThreshold: '0'],
                                 [$class: 'SkippedThreshold', failureNewThreshold: '', failureThreshold: '', unstableNewThreshold: '', unstableThreshold: '']],
                         tools         : [
-                                [$class: 'CustomType', customXSL: 'C:\\Jenkins\\userContent\\nunit3-xunit.xslt', deleteOutputFiles: true, failIfNotNew: true, pattern: 'Artifacts/TestResults.xml', skipNoTestFiles: false, stopProcessingIfError: true]]
+                                [$class: 'CustomType', customXSL: 'nunit3-xunit.xslt', deleteOutputFiles: true, failIfNotNew: true, pattern: 'Artifacts/TestResults.xml', skipNoTestFiles: false, stopProcessingIfError: true]]
                 ])
                 archiveArtifacts 'Artifacts/**'
             }
