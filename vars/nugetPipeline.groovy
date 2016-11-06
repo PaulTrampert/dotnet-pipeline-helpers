@@ -18,5 +18,6 @@ def call(body) {
     deployNuget {
         nugetCredentialsId = config.nugetCredentialsId
         nugetServer = config.nugetServer
+        notificationRecipients = config.notificationRecipients
     }
 }
