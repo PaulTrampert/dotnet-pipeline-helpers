@@ -6,9 +6,11 @@ def call(body) {
 
     node {
         try {
-            unstash 'nupkg'
-            withCredentials([[$class: 'StringBinding', credentialsId: config.nugetCredentialsId, variable: 'NUGET_API_KEY']]) {
-                shell 'nuget push Artifacts/*.nupkg -ApiKey ${env.NUGET_API_KEY} -Source ${config.nugetServer}'
+            stage("Publish Package") {
+                unstash 'nupkg'
+                withCredentials([[$class: 'StringBinding', credentialsId: config.nugetCredentialsId, variable: 'NUGET_API_KEY']]) {
+                    shell 'nuget push Artifacts/*.nupkg -ApiKey ${env.NUGET_API_KEY} -Source ${config.nugetServer}'
+                }
             }
         } catch (any) {
             currentBuild.result = "FAILURE"
