@@ -5,8 +5,6 @@ def call(body) {
     body()
 
     buildNuget {
-        gitCredentialsId = config.gitCredentialsId
-        gitRepoUrl = config.gitRepoUrl
         project = config.project
         notificationRecipients = config.notificationRecipients
     }
