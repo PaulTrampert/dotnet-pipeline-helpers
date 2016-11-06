@@ -14,13 +14,7 @@ def call(body) {
                 if (!fileExists('Artifacts')) {
                     shell "mkdir Artifacts"
                 }
-                if (env.NugetConfig) {
-                    shell "dotnet restore --configfile ${env.NugetConfig}"
-                }
-                else {
-                    shell "dotnet restore"
-                }
-                shell "dotnet build **/project.json"
+                dotnetBuild()
             }
 
             stage("Test") {
