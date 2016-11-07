@@ -13,12 +13,12 @@ def call(body) {
     properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')), pipelineTriggers([])])
 
     config.artifactDir = config.artifactDir ?: "Artifacts"
-    
+
     node{
         stage("Update Sources") {
             checkout scm
-            if (!fileExists(artifactDir)) {
-                shell "mkdir ${artifactDir}"
+            if (!fileExists(config.artifactDir)) {
+                shell "mkdir ${config.artifactDir}"
             }
         }
 
