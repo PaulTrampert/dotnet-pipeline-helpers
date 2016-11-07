@@ -25,10 +25,12 @@ def call(body) {
     ])
     properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')), pipelineTriggers([])])
 
-    echo params
-
     env.ReleaseVersion = params.ReleaseVersion
     env.NextVersion = params.NextVersion
+
+    echo params.ReleaseVersion
+    echo params.NextVersion
+    echo params.IsRelease
 
     buildNuget {
         project = config.project
