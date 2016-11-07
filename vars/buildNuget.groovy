@@ -13,8 +13,8 @@ def call(body) {
     body()
 
     def project = config.project
-    def testProject = config.testProject ? config.testProject : "${project}.Test"
-    def artifactDir = config.artifactDir ? config.artifactDir : "Artifacts"
+    def testProject = config.testProject ?: "${project}.Test"
+    def artifactDir = config.artifactDir ?: "Artifacts"
     def isRelease = config.isRelease
 
     try {
