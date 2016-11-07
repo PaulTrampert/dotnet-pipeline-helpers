@@ -15,7 +15,6 @@ def call(body) {
 
     def project = config.project
     def artifactDir = config.artifactDir
-    def notificationRecipients = config.notificationRecipients
     node{
         stage("Update Sources") {
             checkout scm
@@ -26,7 +25,6 @@ def call(body) {
 
         buildNuget {
             project = project
-            notificationRecipients = notificationRecipients
             artifactDir = artifactDir
             isRelease = false
         }

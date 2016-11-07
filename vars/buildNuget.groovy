@@ -18,12 +18,6 @@ def call(body) {
     def isRelease = config.isRelease
 
     try {
-        stage("Update Sources") {
-            checkout scm
-            if (!fileExists(artifactDir)) {
-                shell "mkdir ${artifactDir}"
-            }
-        }
 
         dotnetBuild()
 
