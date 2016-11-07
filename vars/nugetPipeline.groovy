@@ -14,6 +14,7 @@ def call(body) {
 
     def project = config.project
     def artifactDir = config.artifactDir ?: "Artifacts"
+
     node{
         stage("Update Sources") {
             checkout scm
