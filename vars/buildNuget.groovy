@@ -35,6 +35,6 @@ def call(body) {
         throw any
     } finally {
         deleteDir()
-        emailext attachLog: true, compressLog: true, recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+        emailext attachLog: true, recipientProviders: [[$class: 'CulpritsRecipientProvider']]
     }
 }
