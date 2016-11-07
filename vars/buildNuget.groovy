@@ -17,9 +17,6 @@ def call(body) {
     def artifactDir = config.artifactDir ?: "Artifacts"
     def isRelease = config.isRelease
 
-    echo "config.project: ${config.project}"
-    echo "project: ${project}"
-
     try {
 
         dotnetBuild()
