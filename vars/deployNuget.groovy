@@ -20,6 +20,6 @@ def call(body) {
         throw any
     } finally {
         deleteDir()
-        step([$class: 'Mailer', notifyEveryUnstableBuild: true, sendToIndividuals: true, recipients: config.notificationRecipients])
+        emailext attachLog: true, recipientProviders: [[$class: 'CulpritsRecipientProvider']]
     }
 }
