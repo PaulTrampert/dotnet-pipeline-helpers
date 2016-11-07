@@ -33,6 +33,6 @@ def call(body) {
         project = config.project
         notificationRecipients = config.notificationRecipients
         artifactDir = config.artifactDir
-        isRelease = params.isRelease
+        isRelease = params.IsRelease
     }
 }
