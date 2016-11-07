@@ -28,14 +28,14 @@ def call(body) {
     env.ReleaseVersion = params.ReleaseVersion
     env.NextVersion = params.NextVersion
 
-    echo params.ReleaseVersion
-    echo params.NextVersion
-    echo params.IsRelease
+    echo params?.ReleaseVersion
+    echo params?.NextVersion
+    echo params?.IsRelease
 
     buildNuget {
         project = config.project
         notificationRecipients = config.notificationRecipients
         artifactDir = config.artifactDir
-        isRelease = params.IsRelease
+        isRelease = params?.IsRelease
     }
 }
