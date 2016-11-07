@@ -12,12 +12,8 @@ def call(body) {
 
     properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')), pipelineTriggers([])])
 
-    def project = config.project
-    def artifactDir = config.artifactDir ?: "Artifacts"
-
-
-    echo "config.project: ${config.project}"
-    echo "project: ${project}"
+    config.artifactDir = config.artifactDir ?: "Artifacts"
+    
     node{
         stage("Update Sources") {
             checkout scm
@@ -27,8 +23,8 @@ def call(body) {
         }
 
         buildNuget {
-            project = project
-            artifactDir = artifactDir
+            project = config.project
+            artifactDir = config.artifactDir
             isRelease = false
         }
     }
