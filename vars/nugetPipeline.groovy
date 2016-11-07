@@ -3,7 +3,6 @@
 * Config Values:
 *   project: The project to Build
 *   artifactDir: The directory to write artifacts out to. Defaults to "Artifacts"
-*   notificationRecipients: Emails to notify on failure.
 */
 def call(body) {
     def config = [:]
@@ -14,7 +13,7 @@ def call(body) {
     properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')), pipelineTriggers([])])
 
     def project = config.project
-    def artifactDir = config.artifactDir
+    def artifactDir = config.artifactDir ?: "Artifacts"
     node{
         stage("Update Sources") {
             checkout scm
