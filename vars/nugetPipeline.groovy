@@ -28,10 +28,12 @@ def call(body) {
     env.ReleaseVersion = params.ReleaseVersion
     env.NextVersion = params.NextVersion
 
-    buildNuget {
-        project = config.project
-        notificationRecipients = config.notificationRecipients
-        artifactDir = config.artifactDir
-        isRelease = params?.IsRelease
+    node{
+        buildNuget {
+            project = config.project
+            notificationRecipients = config.notificationRecipients
+            artifactDir = config.artifactDir
+            isRelease = params?.IsRelease
+        }
     }
 }

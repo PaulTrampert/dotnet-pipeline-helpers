@@ -17,32 +17,30 @@ def call(body) {
     def artifactDir = config.artifactDir ? config.artifactDir : "Artifacts"
     def isRelease = config.isRelease
 
-    node {
-        try {
-            stage("Update Sources") {
-                checkout scm
-                if (!fileExists(artifactDir)) {
-                    shell "mkdir ${artifactDir}"
-                }
+    try {
+        stage("Update Sources") {
+            checkout scm
+            if (!fileExists(artifactDir)) {
+                shell "mkdir ${artifactDir}"
             }
-
-            dotnetBuild()
-
-            dotnetTest(testProject, "${artifactDir}/TestResults.xml")
-
-            dotnetPack(project, artifactDir, isRelease)
-
-            stage("Reporting") {
-                reportNunitResults("${artifactDir}/TestResults.xml")
-                archiveArtifacts artifacts: "${artifactDir}/*.nupkg", excludes: "${artifactDir}/*.symbols.nupkg"
-                stash excludes: "${artifactDir}/*.symbols.nupkg", includes: "${artifactDir}/*.nupkg", name: "nupkg"
-            }
-        } catch (any) {
-            currentBuild.result = "FAILURE"
-            throw any
-        } finally {
-            deleteDir()
-            step([$class: 'Mailer', notifyEveryUnstableBuild: true, sendToIndividuals: true, recipients: config.notificationRecipients])
         }
+
+        dotnetBuild()
+
+        dotnetTest(testProject, "${artifactDir}/TestResults.xml")
+
+        dotnetPack(project, artifactDir, isRelease)
+
+        stage("Reporting") {
+            reportNunitResults("${artifactDir}/TestResults.xml")
+            archiveArtifacts artifacts: "${artifactDir}/*.nupkg", excludes: "${artifactDir}/*.symbols.nupkg"
+            stash excludes: "${artifactDir}/*.symbols.nupkg", includes: "${artifactDir}/*.nupkg", name: "nupkg"
+        }
+    } catch (any) {
+        currentBuild.result = "FAILURE"
+        throw any
+    } finally {
+        deleteDir()
+        step([$class: 'Mailer', notifyEveryUnstableBuild: true, sendToIndividuals: true, recipients: config.notificationRecipients])
     }
 }
