@@ -23,8 +23,9 @@ def call(body) {
         ]), 
         pipelineTriggers([])
     ])
-
     properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')), pipelineTriggers([])])
+
+    echo params
 
     env.ReleaseVersion = params.ReleaseVersion
     env.NextVersion = params.NextVersion
