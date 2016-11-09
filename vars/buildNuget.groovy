@@ -1,3 +1,6 @@
+import com.ptrampert.dotnet.Dotnet
+import com.ptrampert.util.Shell
+
 /**
 * Builds and tests a nuget package. Assumes nunit3 as the test runner.
 * Config Values:
@@ -17,14 +20,22 @@ def call(body) {
     def artifactDir = config.artifactDir ?: "Artifacts"
     def isRelease = config.isRelease
 
+    def dotnet = new Dotnet(new Shell(steps))
+
     try {
 
-        dotnetBuild()
+        stage("Build") {dotnet.build()}
 
-        dotnetTest(testProject, "${artifactDir}/TestResults.xml")
+        stage("Test") {dotnet.test(testProject, ['--result': "${artifactDir}/TestResults.xml"])}
 
-        dotnetPack(project, artifactDir, isRelease)
-
+        stage("Package") {
+            def packArgs = ['--output': artifactDir]
+            if (isRelease) {
+                packArgs.put('--version-suffix', "${env.BRANCH_NAME.take(10)}-${env.BUILD_NUMBER}")
+            }
+            dotnet.pack(project, packArgs)
+        }
+        
         stage("Reporting") {
             reportNunitResults("${artifactDir}/TestResults.xml")
             archiveArtifacts artifacts: "${artifactDir}/*.nupkg", excludes: "${artifactDir}/*.symbols.nupkg"
