@@ -24,9 +24,14 @@ def call(body) {
 
     try {
 
-        stage("Build") {dotnet.build()}
+        stage("Build") {
+            dotnet.restore()
+            dotnet.build()
+        }
 
-        stage("Test") {dotnet.test(testProject, ['--result': "${artifactDir}/TestResults.xml"])}
+        stage("Test") {
+            dotnet.test(testProject, ['--result': "${artifactDir}/TestResults.xml"])
+        }
 
         stage("Package") {
             def packArgs = ['--output': artifactDir]
