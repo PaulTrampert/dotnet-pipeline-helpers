@@ -10,6 +10,7 @@ def call(body) {
     body()
 
     properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')), pipelineTriggers([])])
+    properties([parameters([booleanParam(defaultValue: false, description: '', name: 'IS_RELEASE')]), pipelineTriggers([])])
 
     config.artifactDir = config.artifactDir ?: "Artifacts"
 
@@ -21,7 +22,7 @@ def call(body) {
         buildNuget {
             project = config.project
             testProject = config.testProject
-            isRelease = false
+            isRelease = params.IS_RELEASE
         }
     }
 }
