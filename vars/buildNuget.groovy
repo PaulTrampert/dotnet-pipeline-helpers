@@ -12,7 +12,7 @@ def call(body) {
     body()
 
     def project = "${config.project}/${config.project}.csproj"
-    def testProject = "${config.testProject}/${config.testProject}.csproj" ?: "${config.project}.Test/${config.project}.Test.csproj"
+    def testProject = config.testProject ? "${config.testProject}/${config.testProject}.csproj" : "${config.project}.Test/${config.project}.Test.csproj"
     def isRelease = config.isRelease
 
     try {
