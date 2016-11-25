@@ -6,8 +6,7 @@ import com.ptrampert.util.Shell
 * Config Values:
 *   project: The project to Build
 *   testProject: The test project for running tests. Defaults to '${project}.Test'
-*   artifactDir: The directory to write artifacts out to. Defaults to 'Artifacts'
-*   isRelease: True if performing a release build. False if pre-release. 
+*   isRelease: True if performing a release build. False if pre-release.
 */
 def call(body) {
     def config = [:]

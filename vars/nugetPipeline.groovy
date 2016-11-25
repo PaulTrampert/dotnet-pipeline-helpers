@@ -2,8 +2,6 @@
 * Configures a full nuget build, test, and deployment pipeline. Assumes git as the source control.
 * Config Values:
 *   project: The project to Build
-*   artifactDir: The directory to write artifacts out to. Defaults to "Artifacts"
-*   releaseApprover: Email address of the person who can approve a release.
 */
 def call(body) {
     def config = [:]
@@ -18,14 +16,11 @@ def call(body) {
     node{
         stage("Update Sources") {
             checkout scm
-            if (!fileExists(config.artifactDir)) {
-                shell "mkdir ${config.artifactDir}"
-            }
         }
 
         buildNuget {
             project = config.project
-            artifactDir = config.artifactDir
+            testProject = config.testProject
             isRelease = false
         }
     }
