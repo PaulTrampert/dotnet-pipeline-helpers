@@ -15,9 +15,8 @@ def call(body) {
     body.delegate = config
     body()
 
-    def project = config.project
-    def testProject = config.testProject ?: "${project}.Test"
-    def artifactDir = config.artifactDir ?: "Artifacts"
+    def project = "${config.project}/${config.project}.csproj"
+    def testProject = "${config.testProject}/${config.testProject}.csproj" ?: "${config.project}.Test/${config.project}.Test.csproj"
     def isRelease = config.isRelease
 
     def dotnet = new Dotnet(new Shell(steps))
@@ -30,21 +29,21 @@ def call(body) {
         }
 
         stage("Test") {
-            dotnet.test(testProject, ['--result': "${artifactDir}/TestResults.xml"])
+            dotnet.test(testProject, ['--logger': 'trx'])
         }
 
         stage("Package") {
-            def packArgs = ['--output': artifactDir]
-            if (isRelease) {
+            def packArgs = [:]
+            if (!isRelease) {
                 packArgs.put('--version-suffix', "${env.BRANCH_NAME.take(10)}-${env.BUILD_NUMBER}")
             }
             dotnet.pack(project, packArgs)
         }
         
         stage("Reporting") {
-            reportNunitResults("${artifactDir}/TestResults.xml")
-            archiveArtifacts artifacts: "${artifactDir}/*.nupkg", excludes: "${artifactDir}/*.symbols.nupkg"
-            stash excludes: "${artifactDir}/*.symbols.nupkg", includes: "${artifactDir}/*.nupkg", name: "nupkg"
+            reportMSTestResults("**/*.trx")
+            archiveArtifacts artifacts: "**/*.nupkg", excludes: "**/*.symbols.nupkg"
+            stash excludes: "**/*.symbols.nupkg", includes: "**/*.nupkg", name: "nupkg"
         }
     } catch (any) {
         currentBuild.result = "FAILURE"

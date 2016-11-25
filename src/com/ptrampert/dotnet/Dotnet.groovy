@@ -7,7 +7,7 @@ class Dotnet {
         this.shell = shell
     }
 
-    def build(String project = '**/project.json', Map args = [:]) {
+    def build(String project = '', Map args = [:]) {
         command('build', project, args)
     }
 
