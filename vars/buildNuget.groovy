@@ -1,6 +1,3 @@
-import com.ptrampert.dotnet.Dotnet
-import com.ptrampert.util.Shell
-
 /**
 * Builds and tests a nuget package. Assumes nunit3 as the test runner.
 * Config Values:
@@ -18,17 +15,14 @@ def call(body) {
     def testProject = "${config.testProject}/${config.testProject}.csproj" ?: "${config.project}.Test/${config.project}.Test.csproj"
     def isRelease = config.isRelease
 
-    def dotnet = new Dotnet(new Shell(steps))
-
     try {
 
         stage("Build") {
-            dotnet.restore()
-            dotnet.build()
+            dotnetBuild()
         }
 
         stage("Test") {
-            dotnet.test(testProject, ['--logger': 'trx'])
+            dotnetTest(testProject, ['--logger': 'trx'])
         }
 
         stage("Package") {
@@ -36,7 +30,7 @@ def call(body) {
             if (!isRelease) {
                 packArgs.put('--version-suffix', "${env.BRANCH_NAME.take(10)}-${env.BUILD_NUMBER}")
             }
-            dotnet.pack(project, packArgs)
+            dotnetPack(project, packArgs)
         }
         
         stage("Reporting") {

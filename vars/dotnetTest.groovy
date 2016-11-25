@@ -1,7 +1,3 @@
-def call(testProject, resultsFile) {
-    stage("Test"){
-        catchError{
-            shell "dotnet test ${testProject} --result ${resultsFile}"
-        }
-    }
+def call(String project, Map args = [:]) {
+    dotnet('test', project, args)
 }
