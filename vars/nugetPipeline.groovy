@@ -38,5 +38,12 @@ def call(body) {
             releaseVersion = RELEASE_VERSION
             releaseNotes = RELEASE_NOTES
         }
+
+        if (IS_RELEASE) {
+            deployNuget {
+                nugetCredentialsId = config.nugetCredentialsId
+                nugetServer = config.nugetServer
+            }
+        }
     }
 }
