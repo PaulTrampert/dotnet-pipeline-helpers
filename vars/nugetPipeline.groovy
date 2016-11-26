@@ -18,6 +18,9 @@ def call(body) {
             pipelineTriggers([])
     ])
 
+    def RELEASE_VERSION = params.RELEASE_VERSION
+    def IS_RELEASE = params.IS_RELEASE
+
     node{
         stage("Update Sources") {
             checkout scm
@@ -27,8 +30,8 @@ def call(body) {
             project = config.project
             testProject = config.testProject
             isOpenSource = config.isOpenSource
-            isRelease = params ? false : params.IS_RELEASE
-            releaseVersion = params ? null : params.RELEASE_VERSION
+            isRelease = IS_RELEASE
+            releaseVersion = RELEASE_VERSION
         }
     }
 }
