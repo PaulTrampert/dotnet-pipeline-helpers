@@ -1,3 +1,3 @@
-def call(String project, Map args = [:]) {
+def call(String project, String[] args = []) {
     dotnet('pack', project, args)
 }

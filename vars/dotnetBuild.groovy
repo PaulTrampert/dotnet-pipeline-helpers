@@ -1,4 +1,4 @@
-def call(String project = '', Map args = [:]) {
-    dotnet('restore', project, args)
+def call(String project = '', String[] args = []) {
+    dotnet('restore')
     dotnet('build', project, args)
 }

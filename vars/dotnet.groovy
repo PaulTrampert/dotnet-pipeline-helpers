@@ -1,7 +1,7 @@
-def call(String command, String project, Map args) {
+def call(String command, String project = '', String[] args = []) {
     def shellCommand = "dotnet ${command} ${project}"
-    for (k in args.keySet()) {
-        shellCommand = "${shellCommand} ${k} ${args[k] ?: ''}"
+    for (arg in args) {
+        shellCommand = "${shellCommand} ${arg}"
     }
     shell shellCommand
 }

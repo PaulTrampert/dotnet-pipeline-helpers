@@ -21,30 +21,30 @@ def call(body) {
     try {
 
         stage("Build") {
-            def buildArgs = [:]
+            def buildArgs = []
             if (releaseVersion) {
-                buildArgs.put("/p:VersionPrefix=${releaseVersion}", "")
+                buildArgs << "/p:VersionPrefix=${releaseVersion}"
             }
             dotnetBuild('', buildArgs)
         }
 
         stage("Test") {
-            dotnetTest(testProject, ['--logger': 'trx'])
+            dotnetTest(testProject, ['--logger', 'trx'])
         }
 
         stage("Package") {
-            def packArgs = [:]
+            def packArgs = []
             if (!isRelease) {
-                packArgs.put('--version-suffix', "${env.BRANCH_NAME.take(10)}-${env.BUILD_NUMBER}")
+                packArgs << "--version-suffix ${env.BRANCH_NAME.take(10)}-${env.BUILD_NUMBER}"
             }
             if (isOpenSource) {
-                packArgs.put('--include-source', "")
+                packArgs << '--include-source'
             }
             if (releaseVersion) {
-                packArgs.put("/p:VersionPrefix=${releaseVersion}", "")
+                packArgs << "/p:VersionPrefix=${releaseVersion}"
             }
             if (releaseNotes) {
-                packArgs.put("/p:PackageReleaseNote=\"${releaseNotes}\"")
+                packArgs << "/p:PackageReleaseNote=\"${releaseNotes}\""
             }
             dotnetPack(project, packArgs)
         }
