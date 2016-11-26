@@ -13,13 +13,15 @@ def call(body) {
             buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')),
             parameters([
                     booleanParam(defaultValue: false, description: '', name: 'IS_RELEASE'),
-                    string(defaultValue: '', description: '', name: 'RELEASE_VERSION')
+                    string(defaultValue: '', description: '', name: 'RELEASE_VERSION'),
+                    text(defaultValue: '', description: '', name: 'RELEASE_NOTES')
             ]),
             pipelineTriggers([])
     ])
 
     def RELEASE_VERSION = params.RELEASE_VERSION
     def IS_RELEASE = params.IS_RELEASE
+    def RELEASE_NOTES = params.RELEASE_NOTES
 
     node{
         stage("Update Sources") {
@@ -32,6 +34,7 @@ def call(body) {
             isOpenSource = config.isOpenSource
             isRelease = IS_RELEASE
             releaseVersion = RELEASE_VERSION
+            releaseNotes = RELEASE_NOTES
         }
     }
 }

@@ -16,6 +16,7 @@ def call(body) {
     def isRelease = config.isRelease
     def releaseVersion = config.releaseVersion
     def isOpenSource = config.isOpenSource
+    def releaseNotes = config.releaseNotes
 
     try {
 
@@ -41,6 +42,9 @@ def call(body) {
             }
             if (releaseVersion) {
                 packArgs.put("/p:VersionPrefix=${releaseVersion}", "")
+            }
+            if (releaseNotes) {
+                packArgs.put("/p:PackageReleaseNote=\"${releaseNotes}\"")
             }
             dotnetPack(project, packArgs)
         }
