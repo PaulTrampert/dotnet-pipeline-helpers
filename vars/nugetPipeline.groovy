@@ -48,6 +48,8 @@ def call(body) {
         }
 
         if (IS_RELEASE) {
+            echo "Credentials ID: ${config.nugetCredentialsId}"
+            echo "Nuget Server: ${config.nugetServer}"
             deployNuget {
                 nugetCredentialsId = config.nugetCredentialsId
                 nugetServer = config.nugetServer
