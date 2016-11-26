@@ -10,9 +10,13 @@ def call(body) {
     body()
 
     properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')), pipelineTriggers([])])
-    properties([parameters([booleanParam(defaultValue: false, description: '', name: 'IS_RELEASE')]), pipelineTriggers([])])
-
-    config.artifactDir = config.artifactDir ?: "Artifacts"
+    properties([
+            parameters([
+                    booleanParam(defaultValue: false, description: '', name: 'IS_RELEASE'),
+                    string(defaultValue: '', description: '', name: 'RELEASE_VERSION')
+            ]),
+            pipelineTriggers([])
+    ])
 
     node{
         stage("Update Sources") {
@@ -22,7 +26,9 @@ def call(body) {
         buildNuget {
             project = config.project
             testProject = config.testProject
-            isRelease = params.IS_RELEASE
+            isOpenSource = config.isOpenSource
+            isRelease = params.IS_RELEASE ?: false
+            releaseVersion = params.RELEASE_VERSION
         }
     }
 }

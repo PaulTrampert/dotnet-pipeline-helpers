@@ -14,11 +14,17 @@ def call(body) {
     def project = "${config.project}/${config.project}.csproj"
     def testProject = config.testProject ? "${config.testProject}/${config.testProject}.csproj" : "${config.project}.Test/${config.project}.Test.csproj"
     def isRelease = config.isRelease
+    def releaseVersion = config.releaseVersion
+    def isOpenSource = config.isOpenSource
 
     try {
 
         stage("Build") {
-            dotnetBuild()
+            def buildArgs = [:]
+            if (releaseVersion) {
+                buildArgs.put("/p:VersionPrefix=${releaseVersion}", "")
+            }
+            dotnetBuild('', buildArgs)
         }
 
         stage("Test") {
@@ -29,6 +35,12 @@ def call(body) {
             def packArgs = [:]
             if (!isRelease) {
                 packArgs.put('--version-suffix', "${env.BRANCH_NAME.take(10)}-${env.BUILD_NUMBER}")
+            }
+            if (releaseVersion) {
+                packArgs.put("/p:VersionPrefix=${releaseVersion}", "")
+            }
+            if (isOpenSource) {
+                packArgs.put('--include-source', "")
             }
             dotnetPack(project, packArgs)
         }
