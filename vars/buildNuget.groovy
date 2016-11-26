@@ -37,10 +37,10 @@ def call(body) {
                 packArgs.put('--version-suffix', "${env.BRANCH_NAME.take(10)}-${env.BUILD_NUMBER}")
             }
             if (isOpenSource) {
-                packArgs.put('--include-source', "")
+                packArgs.put('--include-source', true)
             }
             if (releaseVersion) {
-                packArgs.put("/p:VersionPrefix=${releaseVersion}", "")
+                packArgs.put("/p:VersionPrefix=${releaseVersion}", true)
             }
             dotnetPack(project, packArgs)
         }
