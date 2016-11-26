@@ -23,6 +23,8 @@ def call(body) {
     def IS_RELEASE = params.IS_RELEASE
     def RELEASE_NOTES = params.RELEASE_NOTES
 
+    echo "Building ${env.BRANCH_NAME}, commit ${env.CHANGE_ID}"
+
     node{
         stage("Update Sources") {
             checkout scm
