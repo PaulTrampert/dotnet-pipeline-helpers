@@ -1,9 +1,9 @@
 def call(String command, String project, Map args) {
     def shellCommand = "dotnet ${command} ${project}"
     echo "Command Line Arg Keys: ${args.keySet()}"
-    args.keySet().each {
-        echo "Cmd Line Arg: ${it} ${args[it]}"
-        shellCommand = "${shellCommand} ${it} ${args[it] == true ? '' : args[it]}"
+    for (k in args.keySet()) {
+        echo "Cmd Line Arg: ${k} ${args[k]}"
+        shellCommand = "${shellCommand} ${k} ${args[k] == true ? '' : args[k]}"
     }
     shell shellCommand
 }
