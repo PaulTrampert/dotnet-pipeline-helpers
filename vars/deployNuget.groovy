@@ -6,6 +6,7 @@ def call(body) {
 
     try {
         stage("Publish Package") {
+            unstash 'nupkg'
             withCredentials([[$class: 'StringBinding', credentialsId: config.nugetCredentialsId, variable: 'NUGET_API_KEY']]) {
                 shell "nuget push **/*.nupkg -ApiKey ${env.NUGET_API_KEY} -Source ${config.nugetServer}"
             }
