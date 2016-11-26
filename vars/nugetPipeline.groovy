@@ -27,8 +27,8 @@ def call(body) {
             project = config.project
             testProject = config.testProject
             isOpenSource = config.isOpenSource
-            isRelease = params.IS_RELEASE ?: false
-            releaseVersion = params.RELEASE_VERSION
+            isRelease = params ? false : params.IS_RELEASE
+            releaseVersion = params ? null : params.RELEASE_VERSION
         }
     }
 }
