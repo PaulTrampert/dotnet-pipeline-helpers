@@ -9,8 +9,8 @@ def call(body) {
     body.delegate = config
     body()
 
-    properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')), pipelineTriggers([])])
     properties([
+            buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')),
             parameters([
                     booleanParam(defaultValue: false, description: '', name: 'IS_RELEASE'),
                     string(defaultValue: '', description: '', name: 'RELEASE_VERSION')
