@@ -1,6 +1,5 @@
 def call(String command, String project, Map args) {
     def shellCommand = "dotnet ${command} ${project}"
-    echo "${args.keySet()}"
-    args.each {k, v -> shellCommand = "${shellCommand} ${k} ${v}"}
+    args.keySet().each {k -> shellCommand = "${shellCommand} ${k} ${args[k]}"}
     shell shellCommand
 }
