@@ -9,15 +9,23 @@ def call(body) {
     body.delegate = config
     body()
 
-    properties([
-            buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')),
-            parameters([
-                    booleanParam(defaultValue: false, description: '', name: 'IS_RELEASE'),
-                    string(defaultValue: '', description: '', name: 'RELEASE_VERSION'),
-                    text(defaultValue: '', description: '', name: 'RELEASE_NOTES')
-            ]),
-            pipelineTriggers([])
-    ])
+    if (env.BRANCH_NAME) {
+        properties([
+                buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5'))
+        ])
+    }
+    else {
+        properties([
+                buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')),
+                parameters([
+                        booleanParam(defaultValue: true, description: '', name: 'IS_RELEASE'),
+                        string(defaultValue: '', description: '', name: 'RELEASE_VERSION'),
+                        text(defaultValue: '', description: '', name: 'RELEASE_NOTES')
+                ]),
+                pipelineTriggers([])
+        ])
+    }
+
 
     def RELEASE_VERSION = params.RELEASE_VERSION
     def IS_RELEASE = params.IS_RELEASE
