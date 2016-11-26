@@ -39,6 +39,7 @@ def call(body) {
                 packArgs.put('--version-suffix', "${env.BRANCH_NAME.take(10)}-${env.BUILD_NUMBER}")
             }
             if (isOpenSource) {
+                echo "Adding --include-source to packArgs"
                 packArgs.put('--include-source', "")
             }
             if (releaseVersion) {
