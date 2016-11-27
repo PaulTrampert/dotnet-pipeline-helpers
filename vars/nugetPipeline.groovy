@@ -19,8 +19,7 @@ def call(body) {
                 buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')),
                 parameters([
                         booleanParam(defaultValue: true, description: '', name: 'IS_RELEASE'),
-                        string(defaultValue: '', description: '', name: 'RELEASE_VERSION'),
-                        text(defaultValue: '', description: '', name: 'RELEASE_NOTES')
+                        string(defaultValue: '', description: '', name: 'RELEASE_VERSION')
                 ]),
                 pipelineTriggers([])
         ])
@@ -29,7 +28,6 @@ def call(body) {
 
     def RELEASE_VERSION = params.RELEASE_VERSION
     def IS_RELEASE = params.IS_RELEASE
-    def RELEASE_NOTES = params.RELEASE_NOTES
 
     echo "Building ${env.BRANCH_NAME}"
 
@@ -44,7 +42,6 @@ def call(body) {
             isOpenSource = config.isOpenSource
             isRelease = IS_RELEASE
             releaseVersion = RELEASE_VERSION
-            releaseNotes = RELEASE_NOTES
         }
 
         if (IS_RELEASE) {
