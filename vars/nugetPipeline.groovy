@@ -37,7 +37,7 @@ def call(body) {
         stage("Update Sources") {
             checkout scm
         }
-        withEnv(["PackageReleaseNotes=${RELEASE_NOTES}"]) {
+        withEnv(["PackageReleaseNotes=\"${RELEASE_NOTES}\""]) {
             buildNuget {
                 project = config.project
                 testProject = config.testProject
