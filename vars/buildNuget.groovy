@@ -61,6 +61,7 @@ def call(body) {
 
         if (packProjects) {
             stage("Package") {
+                echo "looping through ${packProjects}"
                 packProjects.each {
                     def packArgs = ['--no-build']
                     if (!isRelease) {
