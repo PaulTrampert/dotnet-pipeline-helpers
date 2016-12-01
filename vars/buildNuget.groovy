@@ -37,8 +37,8 @@ def call(body) {
 
         if (testProjects) {
             stage("Test") {
-                testProjects.each {
-                    dotnetTest("${it}/${it}.csproj", ['--logger', 'trx', '--noBuild'])
+                for(def proj : testProjects) {
+                    dotnetTest("${proj}/${proj}.csproj", ['--logger', 'trx', '--noBuild'])
                 }
             }
         }
@@ -62,7 +62,7 @@ def call(body) {
         if (packProjects) {
             stage("Package") {
                 echo "looping through ${packProjects}"
-                packProjects.each {
+                for(def proj : packProjects) {
                     def packArgs = ['--no-build']
                     if (!isRelease) {
                         packArgs << "--version-suffix ${env.BRANCH_NAME.take(10)}-${env.BUILD_NUMBER}"
@@ -73,7 +73,7 @@ def call(body) {
                     if (releaseVersion) {
                         packArgs << "/p:VersionPrefix=${releaseVersion}"
                     }
-                    dotnetPack("${it}/${it}.csproj", packArgs)
+                    dotnetPack("${proj}/${proj}.csproj", packArgs)
                 }
             }
         }
