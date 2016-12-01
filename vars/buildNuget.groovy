@@ -11,8 +11,10 @@ def call(body) {
     body.delegate = config
     body()
 
-    def project = "${config.project}/${config.project}.csproj"
-    def testProject = config.testProject ? "${config.testProject}/${config.testProject}.csproj" : "${config.project}.Test/${config.project}.Test.csproj"
+    def project = config.project ? "${config.project}/${config.project}.csproj" : null
+    def packProjects = config.packProjects
+    def testProject = config.testProject ? "${config.testProject}/${config.testProject}.csproj" : (config.project ? "${config.project}.Test/${config.project}.Test.csproj" : null)
+    def testProjects = config.testProjects
     def isRelease = config.isRelease
     def releaseVersion = config.releaseVersion
     def isOpenSource = config.isOpenSource
@@ -27,22 +29,52 @@ def call(body) {
             dotnetBuild('', buildArgs)
         }
 
-        stage("Test") {
-            dotnetTest(testProject, ['--logger', 'trx'])
+        if (testProject) {
+            stage("Test") {
+                dotnetTest(testProject, ['--logger', 'trx', '--noBuild'])
+            }
         }
 
-        stage("Package") {
-            def packArgs = []
-            if (!isRelease) {
-                packArgs << "--version-suffix ${env.BRANCH_NAME.take(10)}-${env.BUILD_NUMBER}"
+        if (testProjects) {
+            stage("Test") {
+                testProjects.each {
+                    dotnetTest("${it}/${it}.csproj", ['--logger', 'trx', '--noBuild'])
+                }
             }
-            if (isOpenSource) {
-                packArgs << '--include-source'
+        }
+
+        if (project) {
+            stage("Package") {
+                def packArgs = ['--noBuild']
+                if (!isRelease) {
+                    packArgs << "--version-suffix ${env.BRANCH_NAME.take(10)}-${env.BUILD_NUMBER}"
+                }
+                if (isOpenSource) {
+                    packArgs << '--include-source'
+                }
+                if (releaseVersion) {
+                    packArgs << "/p:VersionPrefix=${releaseVersion}"
+                }
+                dotnetPack(project, packArgs)
             }
-            if (releaseVersion) {
-                packArgs << "/p:VersionPrefix=${releaseVersion}"
+        }
+
+        if (packProjects) {
+            stage("Package") {
+                packProjects.each {
+                    def packArgs = ['--noBuild']
+                    if (!isRelease) {
+                        packArgs << "--version-suffix ${env.BRANCH_NAME.take(10)}-${env.BUILD_NUMBER}"
+                    }
+                    if (isOpenSource) {
+                        packArgs << '--include-source'
+                    }
+                    if (releaseVersion) {
+                        packArgs << "/p:VersionPrefix=${releaseVersion}"
+                    }
+                    dotnetPack("${it}/${it}.csproj", packArgs)
+                }
             }
-            dotnetPack(project, packArgs)
         }
         
         stage("Reporting") {

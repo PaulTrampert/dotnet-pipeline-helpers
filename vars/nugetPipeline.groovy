@@ -40,7 +40,10 @@ def call(body) {
         withEnv(["PackageReleaseNotes=\"${RELEASE_NOTES}\""]) {
             buildNuget {
                 project = config.project
+                packProjects = config.packProjects
                 testProject = config.testProject
+                testProjects = config.testProjects
+                publishProjects = config.publishProjects
                 isOpenSource = config.isOpenSource
                 isRelease = IS_RELEASE
                 releaseVersion = RELEASE_VERSION
