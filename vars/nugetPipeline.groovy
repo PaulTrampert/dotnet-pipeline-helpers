@@ -20,7 +20,7 @@ def call(body) {
                 parameters([
                         booleanParam(defaultValue: true, description: '', name: 'IS_RELEASE'),
                         string(defaultValue: '', description: '', name: 'RELEASE_VERSION'),
-                        string(defaultValue: '', description: '', name: 'RELEASE_NOTES')
+                        text(defaultValue: '', description: '', name: 'RELEASE_NOTES')
                 ]),
                 pipelineTriggers([])
         ])
