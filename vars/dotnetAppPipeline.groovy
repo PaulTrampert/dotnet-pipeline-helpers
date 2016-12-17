@@ -37,7 +37,6 @@ def call(body) {
         }
         withEnv(["PackageReleaseNotes=\"${RELEASE_NOTES}\""]) {
             buildDotnetApp {
-                publishProjects = config.publishProjects
                 testProjects = config.testProjects
                 publishProjects = config.publishProjects
                 isRelease = IS_RELEASE
