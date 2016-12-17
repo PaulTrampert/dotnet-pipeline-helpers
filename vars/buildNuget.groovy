@@ -45,7 +45,7 @@ def call(body) {
 
         if (project) {
             stage("Package") {
-                def packArgs = ['--noBuild']
+                def packArgs = ['--no-build']
                 if (!isRelease) {
                     packArgs << "--version-suffix ${env.BRANCH_NAME.take(10)}-${env.BUILD_NUMBER}"
                 }
