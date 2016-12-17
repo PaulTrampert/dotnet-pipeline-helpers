@@ -39,7 +39,7 @@ def call(body) {
         if (publishProjects) {
             stage("Publish") {
                 for(def proj : publishProjects) {
-                    dotnetPublish("${proj}/${proj}.csproj", ['--no-build'])
+                    dotnetPublish("${proj}/${proj}.csproj", [])
                 }
             }
         }
