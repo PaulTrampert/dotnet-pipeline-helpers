@@ -31,14 +31,14 @@ def call(body) {
 
         if (testProject) {
             stage("Test") {
-                dotnetTest(testProject, ['--logger', 'trx', '--noBuild'])
+                dotnetTest(testProject, ['--logger', 'trx', '--no-build'])
             }
         }
 
         if (testProjects) {
             stage("Test") {
                 for(def proj : testProjects) {
-                    dotnetTest("${proj}/${proj}.csproj", ['--logger', 'trx', '--noBuild'])
+                    dotnetTest("${proj}/${proj}.csproj", ['--logger', 'trx', '--no-build'])
                 }
             }
         }
