@@ -23,6 +23,9 @@ def call(body) {
 
         stage("Build") {
             def buildArgs = []
+            if (!isRelease && env.BRANCH_NAME) {
+                buildArgs << "--version-suffix ${env.BRANCH_NAME.take(10)}-${env.BUILD_NUMBER}"
+            }
             if (releaseVersion) {
                 buildArgs << "/p:VersionPrefix=${releaseVersion}"
             }
