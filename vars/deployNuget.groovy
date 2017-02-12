@@ -34,7 +34,7 @@ def call(body) {
                 args << "--symbol-source ${symbolServer}"
             }
             if (!config.isOpenSource) {
-                args << "--no-symbols"
+                args << "--no-symbols true"
             }
             dotnetNugetPush("**/*.nupkg", args)
         }
