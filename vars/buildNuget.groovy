@@ -83,8 +83,8 @@ def call(body) {
         
         stage("Reporting") {
             reportMSTestResults("**/*.trx")
-            archiveArtifacts artifacts: "**/*.nupkg", excludes: "**/*.symbols.nupkg"
-            stash excludes: "**/*.symbols.nupkg", includes: "**/*.nupkg", name: "nupkg"
+            archiveArtifacts artifacts: "**/*.nupkg"
+            stash includes: "**/*.nupkg", name: "nupkg"
         }
     } catch (any) {
         currentBuild.result = "FAILURE"
