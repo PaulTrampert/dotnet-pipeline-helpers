@@ -56,6 +56,9 @@ def call(body) {
             deployNuget {
                 nugetCredentialsId = config.nugetCredentialsId
                 nugetServer = config.nugetServer
+                symbolCredentialsId = config.symbolsCredentialsId
+                symbolServer = config.symbolServer
+                isOpenSource = config.isOpenSource
             }
         }
     }
