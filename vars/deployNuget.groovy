@@ -6,7 +6,6 @@ def call(body) {
 
     try {
         stage("Publish Package") {
-            unstash 'nupkg'
             def nugetCredentialsId = config.nugetCredentialsId
             def nugetServer = config.nugetServer ?: 'https://api.nuget.org/v3/index.json'
             def symbolCredId = config.symbolsCredentialsId ?: nugetCredentialsId
@@ -17,20 +16,21 @@ def call(body) {
             echo "Symbol Server: ${symbolServer ?: '<none>'}"
 
             withCredentials([string(credentialsId: nugetCredentialsId, variable: 'NUGET_API_KEY')]) {
-                withCredentials([string(credentialsId: symbolCredId, variable: 'SYMBOL_API_KEY')]) {
+                unstash "nupkg"
+                def args = []
+                args << "--api-key ${env.NUGET_API_KEY}"
+                args << "--source ${nugetServer}"
+                dotnetNugetPush("**/*.nupkg", args)
+                deleteDir()
+            }
+            if (config.isOpenSource && symbolServer && symbolCredId) {
+                withCredentials([string(credentialsId: symbolCredId, variable: "SYMBOL_API_KEY")]) {
+                    unstash "symbols"
                     def args = []
-                    args << "--api-key ${env.NUGET_API_KEY}"
-                    args << "--source ${nugetServer}"
-                    if (config.isOpenSource) {
-                        args << "--symbol-api-key ${env.SYMBOL_API_KEY}"
-                    }
-                    if (symbolServer && config.isOpenSource) {
-                        args << "--symbol-source ${symbolServer}"
-                    }
-                    if (!symbolServer || !config.isOpenSource) {
-                        args << "--no-symbols true"
-                    }
-                    dotnetNugetPush("**/*.nupkg", args)
+                    args << "--api-key ${env.SYMBOL_API_KEY}"
+                    args << "--source ${symbolServer}"
+                    dotnetNugetPush("**/*.symbols.nupkg", args)
+                    deleteDir()
                 }
             }
         }
