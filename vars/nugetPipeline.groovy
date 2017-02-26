@@ -55,7 +55,7 @@ def call(body) {
                 nugetServer = config.nugetServer
                 nugetCredentialsId = config.nugetCredentialsId
                 deploySymbols = config.deploySymbols
-                symbolCredentialsId = config.symbolsCredentialsId
+                symbolsCredentialsId = config.symbolsCredentialsId
                 symbolServer = config.symbolServer
             }
         }
