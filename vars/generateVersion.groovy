@@ -1,7 +1,7 @@
 import com.ptrampert.SemVer
 
 def call() {
-    def describeString
+    def describeString = ''
     if (isUnix()) {
         describeString = sh returnStdout: true, script: 'git describe --tags'
     }
