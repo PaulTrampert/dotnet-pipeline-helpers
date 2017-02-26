@@ -44,7 +44,7 @@ def call(body) {
                 testProject = config.testProject
                 testProjects = config.testProjects
                 isRelease = IS_RELEASE
-                releaseVersion = RELEASE_VERSION ?: generateVersion
+                releaseVersion = RELEASE_VERSION ?: generateVersion()
             }
         }
 
