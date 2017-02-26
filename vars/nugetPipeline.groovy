@@ -51,12 +51,12 @@ def call(body) {
 
         if (IS_RELEASE) {
             deployNuget {
-                nugetCredentialsId = config.nugetCredentialsId
+                deployNupkg = config.deployNupkg
                 nugetServer = config.nugetServer
+                nugetCredentialsId = config.nugetCredentialsId
+                deploySymbols = config.deploySymbols
                 symbolCredentialsId = config.symbolsCredentialsId
                 symbolServer = config.symbolServer
-                deployNupkg = config.deployNupkg
-                deploySymbols = config.deploySymbols
             }
         }
     }
