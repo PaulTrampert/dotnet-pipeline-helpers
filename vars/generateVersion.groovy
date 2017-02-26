@@ -14,11 +14,8 @@ def call() {
     return result
 }
 
-@NonCPS
 def calculateSemver(str) {
     def semver = SemVer.Parse str
     semver.minor++
-    def result = semver.toString()
-    semver = null
-    return result
+    return semver.toString()
 }
