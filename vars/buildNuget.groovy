@@ -84,9 +84,9 @@ def call(body) {
         }
     } catch (any) {
         currentBuild.result = "FAILURE"
+        emailext attachLog: true, recipientProviders: [[$class: 'CulpritsRecipientProvider']]
         throw any
     } finally {
         deleteDir()
-        emailext attachLog: true, recipientProviders: [[$class: 'CulpritsRecipientProvider']]
     }
 }
