@@ -7,7 +7,7 @@ class SemVer implements Serializable {
     int minor
     int patch
 
-    static SemVer Parse(String str) {
+    static SemVer Parse(str) {
         def matcher = (str =~ ~/(\d+)\.(\d+)\.(\d+)/)
         def result = new SemVer()
         if (matcher.matches()) {
@@ -20,6 +20,6 @@ class SemVer implements Serializable {
     }
 
     String toString() {
-        return "${major}.${minor}.${patch}"
+        return "${major}.${minor}.${patch}".toString()
     }
 }
