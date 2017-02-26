@@ -1,6 +1,5 @@
 import com.ptrampert.SemVer
 
-@NonCPS
 def call() {
     String describeString
     if (isUnix()) {
@@ -10,11 +9,14 @@ def call() {
         describeString = bat returnStdout: true, script: 'git describe --tags'
     }
     echo "describeString = ${describeString}"
+    def result = calculateSemver describeString
+    echo "semver.toString() = ${result}"
+    return result
+}
+
+@NonCPS
+def calculateSemver(str) {
     def semver = SemVer.Parse describeString
     semver.minor++
-    echo "semver.major = ${semver.major}"
-    echo "semver.minor = ${semver.minor}"
-    echo "semver.patch = ${semver.patch}"
-    echo "semver.toString() = ${semver.toString()}"
     return semver.toString()
 }
