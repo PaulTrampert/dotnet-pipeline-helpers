@@ -1,9 +1,8 @@
 package com.ptrampert
 
-/**
- * Created by pault on 2/26/2017.
- */
-class SemVer {
+class SemVer implements Serializable {
+    private static final long serialVersionUID = 1234L
+
     int major
     int minor
     int patch
