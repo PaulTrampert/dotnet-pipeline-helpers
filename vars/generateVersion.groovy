@@ -4,10 +4,10 @@ import com.ptrampert.SemVer
 def call() {
     String describeString
     if (isUnix()) {
-        describeString = sh returnStdout:true, "git describe --tags"
+        describeString = sh returnStdout: true, script: 'git describe --tags'
     }
     else {
-        describeString = bat returnStdout: true, "git describe --tags"
+        describeString = bat returnStdout: true, script: 'git describe --tags'
     }
     def semver = SemVer.Parse describeString
     semver.minor++
