@@ -1,7 +1,7 @@
 import com.ptrampert.SemVer
 
 def call() {
-    def describeString = ''
+    def describeString
     if (isUnix()) {
         describeString = sh returnStdout: true, script: 'git describe --tags'
     }
@@ -16,7 +16,7 @@ def call() {
 
 @NonCPS
 def calculateSemver(str) {
-    def semver = SemVer.Parse describeString
+    def semver = SemVer.Parse str
     semver.minor++
     return semver.toString()
 }
