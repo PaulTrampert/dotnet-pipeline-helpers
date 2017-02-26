@@ -18,5 +18,7 @@ def call() {
 def calculateSemver(str) {
     def semver = SemVer.Parse str
     semver.minor++
-    return semver.toString()
+    def result = semver.toString()
+    semver = null
+    return result
 }
