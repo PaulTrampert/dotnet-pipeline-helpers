@@ -43,7 +43,6 @@ def call(body) {
                 packProjects = config.packProjects
                 testProject = config.testProject
                 testProjects = config.testProjects
-                publishProjects = config.publishProjects
                 isRelease = IS_RELEASE
                 releaseVersion = RELEASE_VERSION
             }
