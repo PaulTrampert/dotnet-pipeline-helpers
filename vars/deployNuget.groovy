@@ -12,8 +12,10 @@ def call(body) {
             def deploySymbols = config.deploySymbols
             def symbolCredId = config.symbolsCredentialsId ?: nugetCredentialsId
             def symbolServer = config.symbolServer
+            echo "Deploy Nupkg: ${deployNupkg}"
             echo "Credentials ID: ${nugetCredentialsId ?: '<default>'}"
             echo "Nuget Server: ${nugetServer ?: '<default>'}"
+            echo "Deploy Symbols: ${deploySymbols}"
             echo "Symbols Credentials ID: ${symbolCredId ?: '<default>'}"
             echo "Symbol Server: ${symbolServer ?: '<none>'}"
 
