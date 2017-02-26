@@ -44,7 +44,6 @@ def call(body) {
                 testProject = config.testProject
                 testProjects = config.testProjects
                 publishProjects = config.publishProjects
-                isOpenSource = config.isOpenSource
                 isRelease = IS_RELEASE
                 releaseVersion = RELEASE_VERSION
             }
@@ -56,7 +55,8 @@ def call(body) {
                 nugetServer = config.nugetServer
                 symbolCredentialsId = config.symbolsCredentialsId
                 symbolServer = config.symbolServer
-                isOpenSource = config.isOpenSource
+                deployNupkg = config.deployNupkg
+                deploySymbols = config.deploySymbols
             }
         }
     }

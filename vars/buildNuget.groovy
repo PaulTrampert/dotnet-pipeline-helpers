@@ -17,7 +17,6 @@ def call(body) {
     def testProjects = config.testProjects
     def isRelease = config.isRelease
     def releaseVersion = config.releaseVersion
-    def isOpenSource = config.isOpenSource
 
     try {
 
@@ -52,9 +51,7 @@ def call(body) {
                 if (!isRelease && env.BRANCH_NAME) {
                     packArgs << "--version-suffix ${env.BRANCH_NAME.take(10)}-${env.BUILD_NUMBER}"
                 }
-                if (isOpenSource) {
-                    packArgs << '--include-source'
-                }
+                packArgs << '--include-source'
                 if (releaseVersion) {
                     packArgs << "/p:VersionPrefix=${releaseVersion}"
                 }
@@ -70,9 +67,7 @@ def call(body) {
                     if (!isRelease) {
                         packArgs << "--version-suffix ${env.BRANCH_NAME.take(10)}-${env.BUILD_NUMBER}"
                     }
-                    if (isOpenSource) {
-                        packArgs << '--include-source'
-                    }
+                    packArgs << '--include-source'
                     if (releaseVersion) {
                         packArgs << "/p:VersionPrefix=${releaseVersion}"
                     }
