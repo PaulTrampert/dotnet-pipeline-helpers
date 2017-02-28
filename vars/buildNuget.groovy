@@ -75,18 +75,22 @@ def call(body) {
                 }
             }
         }
-        
-        stage("Reporting") {
-            reportMSTestResults("**/*.trx")
-            archiveArtifacts artifacts: "**/*.nupkg"
-            stash includes: "**/*.nupkg", excludes:"**/*.symbols.nupkg", name: "nupkg"
-            stash includes: "**/*.symbols.nupkg", name: "symbols"
-        }
     } catch (any) {
         currentBuild.result = "FAILURE"
         emailext attachLog: true, recipientProviders: [[$class: 'CulpritsRecipientProvider']]
         throw any
     } finally {
-        deleteDir()
+
+        try {
+            stage("Reporting") {
+                reportMSTestResults("**/*.trx")
+                archiveArtifacts artifacts: "**/*.nupkg"
+                stash includes: "**/*.nupkg", excludes: "**/*.symbols.nupkg", name: "nupkg"
+                stash includes: "**/*.symbols.nupkg", name: "symbols"
+            }
+        }
+        finally {
+            deleteDir()
+        }
     }
 }
